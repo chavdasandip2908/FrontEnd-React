@@ -1,0 +1,173 @@
+.main * {
+    color: #0d016a
+}
+
+.main {
+    min-width: fit-content;
+    width: 40%;
+    min-height: fit-content;
+    height: 100%;
+    background: #e9e9e99e;
+    margin: auto;
+    padding: 1px 38px 38px;
+    font-family: system-ui;
+    font-size: 20px;
+    border-radius: 4px;
+    margin-top: 15px !important;
+}
+
+.form-logo img {
+    width: 200px;
+    max-width: 50vw;
+
+}
+
+h1.logo {
+    margin: 0;
+    padding: 15px 0;
+}
+
+.header {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.form-text {
+    text-align: end;
+}
+
+.header p {
+    margin: 0;
+    padding: 0;
+}
+
+.fiels {
+    margin: 20px 10px;
+}
+
+.fiels label.field-name {
+    display: block;
+    width: 100% !important;
+    font-weight: 500;
+}
+
+.fiels input,
+.fiels select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid;
+    font-size: 17px;
+    padding: 5px;
+    width: 300px;
+    max-width: 100vw;
+}
+
+.fiels input[type=file] {
+    font-size: small;
+}
+
+.fiels input[type=checkbox] {
+    width: fit-content;
+}
+
+.fiels select {
+    display: block;
+    max-width: 100%;
+    width: 310px;
+}
+
+.fiels .message {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+.fiels input:focus {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid;
+}
+
+.field-group {
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: flex-start
+}
+
+.checkbox-field {
+    width: 300px;
+    font-size: 17px;
+}
+
+button.add-component {
+    color: #005fff;
+    background: transparent;
+    border: 1px solid #005fff;
+    /* background-color: #0d016ab5; */
+    padding: 7px 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+button.add-component:focus {
+    color: #fff;
+    background: linear-gradient(to bottom right, #490099, #005fff);
+    border-color: #005fff;
+    /* background-color: #0d016ab5; */
+    /* border-bottom:1px solid black;
+    border-right:1px solid black; */
+}
+
+button.form-sub-btn {
+    font-weight: bold;
+    color: #321fc9;
+    border: 1px solid #321fc9;
+    border-radius: 3px;
+    background: #321fc92b;
+    padding: 10px 10px;
+    margin: 10px 0px;
+    width: 100%;
+    font-size: 17px;
+}
+
+button.form-sub-btn:focus {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    /* background: #2d19c6a1; */
+    background: linear-gradient(to bottom right, #2d19c6d9, #2d19c6a6, #198fc6ba);
+}
+
+@media screen and (max-width: 570px) {
+    .header {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .field-group {
+        flex-direction: column;
+    }
+
+    .form-text {
+        text-align: center;
+    }
+
+    .fiels input,
+    .fiels select {
+        max-width: 85vw;
+    }
+
+    .main {
+        padding: 0 10px;
+    }
+}
