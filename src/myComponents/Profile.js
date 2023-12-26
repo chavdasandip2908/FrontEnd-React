@@ -33,9 +33,7 @@ export default function Profile() {
                             <div className="card-body text-center">
                                 <img
                                     src={UserData.personalInfo.profile ? UserData.personalInfo.profile : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
-                                    alt="avatar"
-                                    className="rounded-circle img-fluid"
-                                    style={{ width: 150 }}
+                                    alt="avatar" className="rounded-circle" height={150} width={150}
                                 />
                                 <h5 className="my-3">{UserData.personalInfo.username}</h5>
                                 <div className="d-flex justify-content-center mb-2">

@@ -7,7 +7,7 @@ export default function MobileNumber(Props) {
                 <div className="field-group">
                     <div className="fiels">
                         <label htmlFor="typeNum" className="field-name">Type of Number</label>
-                        <select name="typeNum" id="typeNum" onChange={(e) => Props.func.setTypeOfMobileNumber(e.target.value)}>
+                        <select name="typeNum" id="typeNum" value={Props.typeOfMobileNumber} onChange={(e) => Props.func.setTypeOfMobileNumber(e.target.value)}>
                             <option value="null">Please Select</option>
                             <option value="office">office</option>
                             <option value="home">Home</option>
@@ -16,7 +16,7 @@ export default function MobileNumber(Props) {
                     </div>
                     <div className="fiels">
                         <label htmlFor="mobile" className="field-name">Mobile Number</label>
-                        <input type="number" id="mobile" className="input-field" name="mobile" onChange={(e) => Props.func.setMobile(e.target.value)} />
+                        <input type="number" id="mobile" value={Props.Mobile} className="input-field" name="mobile" onChange={(e) => Props.func.setMobile(e.target.value)} />
                         <div className="message">enter mobile number</div>
                     </div>
                 </div>

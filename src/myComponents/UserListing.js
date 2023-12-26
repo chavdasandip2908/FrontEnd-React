@@ -15,7 +15,7 @@ export default function UserListing() {
         history("/user-listing");
     };
 
-    const handleEdit = (data) => {
+    const setDataLocalStorage = (data) => {
         // Check if localStorage is available
         if (typeof localStorage !== 'undefined' && localStorage !== null) {
             localStorage.setItem("Data", JSON.stringify(data));
@@ -88,10 +88,10 @@ export default function UserListing() {
                                         </td>
                                         <td>
                                             <Link to={'/edit'}>
-                                                <Button onClick={() => { handleEdit(item) }} className='btn btn-primary'>Edit</Button>&nbsp;
+                                                <Button onClick={() => { setDataLocalStorage(item) }} className='btn btn-primary'>Edit</Button>&nbsp;
                                             </Link>
                                             <Button onClick={() => { handleDelete(item.id) }} className='btn btn-danger'>Delete</Button>&nbsp;
-                                            <Button onClick={() => { history("/profile");}} className='btn btn-info'>View</Button>&nbsp;
+                                            <Button onClick={() => { setDataLocalStorage(item); history("/profile"); }} className='btn btn-info'>View</Button>&nbsp;
                                         </td>
 
                                     </tr>

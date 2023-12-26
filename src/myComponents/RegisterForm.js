@@ -4,7 +4,7 @@ import MobileNumber from './MobileNumber'
 import "./RegisterForm.css"
 import UserData from './UserData'
 import { v4 as uuid } from "uuid";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import registerLogo from "./pngtree-register-now-banner-design-transparent-background-png-image_6535781.png"
 
 
@@ -58,17 +58,84 @@ export default function RegisterForm() {
 
     };
 
-    const convertURLBase64 = (event) => {
-        const file = event.target.files[0];
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result;
-                setProfile(base64String);
-            };
-            reader.readAsDataURL(file);
+            // Resize the image before converting to Base64
+            resizeImage(file, 150, 150, (resizedImage) => {
+                convertToBase64(resizedImage);
+            });
         }
-    }
+    };
+
+    const resizeImage = (file, maxWidth, maxHeight, callback) => {
+        const reader = new FileReader();
+
+        reader.onload = function (readerEvent) {
+            const image = new Image();
+            image.onload = function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                let width = image.width;
+                let height = image.height;
+
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(image, 0, 0, width, height);
+
+                const dataUrl = canvas.toDataURL('image/jpeg');
+                const resizedImage = dataURLtoFile(dataUrl, 'resized.jpg');
+                callback(resizedImage);
+            };
+            image.src = readerEvent.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    const convertToBase64 = (file) => {
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            const base64String = reader.result;
+            setProfile(base64String);
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    // Convert data URL to File
+    const dataURLtoFile = (dataURL, filename) => {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    };
+
+
 
     let history = useNavigate();
 
@@ -139,7 +206,7 @@ export default function RegisterForm() {
         UserData.push(data);
         // console.log(data);
         localStorage.setItem("user-data", JSON.stringify(data));
-        history('/home');
+        history('/user-listing');
     }
 
     return (
@@ -203,7 +270,7 @@ export default function RegisterForm() {
                     <div className="field-group">
                         <div className="fiels">
                             <label htmlFor="profile" className="field-name">Profile Picture</label>
-                            <input type="file" id="profile" className="input-field" name="fileUpload" accept=".png, .jpg" onChange={(e) => { convertURLBase64(e) }} />
+                            <input type="file" id="profile" className="input-field" name="fileUpload" accept=".png, .jpg" onChange={(e) => { handleImageChange(e) }} />
                             <div className="message">upload profile picture</div>
                         </div>
                         <div className="fiels">
@@ -253,11 +320,11 @@ export default function RegisterForm() {
                     </div>
                     <br />
                     <MobileNumber func={{ setTypeOfMobileNumber, setMobile }} />
-                    <button className="add-component"> + Add another Mobile Number </button>
+                    {/* <button className="add-component"> + Add another Mobile Number </button> */}
                     <Address func={{ setTypeOfAddress, setHouseNumber, setStreet, setLandmark, setSociety, setCountry, setState, setCity, setPinCode }} />
-                    <button className="add-component"> + Add another Address</button>
+                    {/* <button className="add-component"> + Add another Address</button> */}
                     <br />
-                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Submit</button>
+                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Upadate</button>
                 </form>
             </div>
         </>
