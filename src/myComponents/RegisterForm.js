@@ -324,7 +324,7 @@ export default function RegisterForm() {
                     <Address func={{ setTypeOfAddress, setHouseNumber, setStreet, setLandmark, setSociety, setCountry, setState, setCity, setPinCode }} />
                     {/* <button className="add-component"> + Add another Address</button> */}
                     <br />
-                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Upadate</button>
+                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Submit</button>
                 </form>
             </div>
         </>

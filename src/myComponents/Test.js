@@ -1,92 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const ImageUploader = () => {
-    const [profile, setProfile] = useState(null);
+const YourComponent = () => {
+  const [authToken, setAuthToken] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Get access token
+        const responseToken = await axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
+          headers: {
+            "Accept": "application/json",
+            "api-token": "6ipX_pWA4MT4iEk7S-1oRAZ7QvVq2PhmwQFpquICe6DLLHauIRUl_kCQNcrNxelcwSc",
+            "user-email": "chavdasandipbhai@gmail.com"
+          }
+        });
 
-        if (file) {
-            // Resize the image before converting to Base64
-            resizeImage(file, 300, 300, (resizedImage) => {
-                convertToBase64(resizedImage);
-            });
+        setAuthToken(responseToken.data.auth_token);
+
+        // Get countries
+        const responseCountries = await axios.get('https://www.universal-tutorial.com/api/countries/', {
+          headers: {
+            "Authorization": `Bearer ${responseToken.data.auth_token}`,
+            "Accept": "application/json"
+          }
+        });
+
+        setCountries(responseCountries.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run the effect only once
+
+  const getStates = async (countryName) => {
+    try {
+      const responseStates = await axios.get(`https://www.universal-tutorial.com/api/states/${countryName}`, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+          "Accept": "application/json"
         }
-    };
+      });
 
-    const resizeImage = (file, maxWidth, maxHeight, callback) => {
-        const reader = new FileReader();
+      setStates(responseStates.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        reader.onload = function (readerEvent) {
-            const image = new Image();
-            image.onload = function () {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                let width = image.width;
-                let height = image.height;
-
-                if (width > height) {
-                    if (width > maxWidth) {
-                        height *= maxWidth / width;
-                        width = maxWidth;
-                    }
-                } else {
-                    if (height > maxHeight) {
-                        width *= maxHeight / height;
-                        height = maxHeight;
-                    }
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-
-                ctx.drawImage(image, 0, 0, width, height);
-
-                const dataUrl = canvas.toDataURL('image/jpeg');
-                const resizedImage = dataURLtoFile(dataUrl, 'resized.jpg');
-                callback(resizedImage);
-            };
-            image.src = readerEvent.target.result;
-        };
-
-        reader.readAsDataURL(file);
-    };
-
-    const convertToBase64 = (file) => {
-        const reader = new FileReader();
-
-        reader.onloadend = function () {
-            const base64String = reader.result;
-            setProfile(base64String);
-        };
-
-        reader.readAsDataURL(file);
-    };
-
-    // Convert data URL to File
-    const dataURLtoFile = (dataURL, filename) => {
-        const arr = dataURL.split(',');
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+  const getCities = async (stateName) => {
+    try {
+      const responseCities = await axios.get(`https://www.universal-tutorial.com/api/cities/${stateName}`, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+          "Accept": "application/json"
         }
+      });
 
-        return new File([u8arr], filename, { type: mime });
-    };
+      setCities(responseCities.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    return (
-        <div>
-            <input type="file" onChange={handleImageChange} accept="image/*" />
+  const handleCountryChange = (event) => {
+    const selectedCountry = event.target.value;
+    getStates(selectedCountry);
+  };
 
+  const handleStateChange = (event) => {
+    const selectedState = event.target.value;
+    getCities(selectedState);
+  };
 
-            <img src={profile} alt="Preview" style={{ maxWidth: '300px', maxHeight: '300px' }} />
-        </div>
-    );
+  return (
+    <div>
+      <label htmlFor="country">Country:</label>
+      <select id="country" onChange={handleCountryChange}>
+        <option value="select">Select Country</option>
+        {countries.map(country => (
+          <option key={country.country_name} value={country.country_name}>{country.country_name}</option>
+        ))}
+      </select>
+
+      <label htmlFor="state">State:</label>
+      <select id="state" onChange={handleStateChange}>
+        <option value="select">Select State</option>
+        {states.map(state => (
+          <option key={state.state_name} value={state.state_name}>{state.state_name}</option>
+        ))}
+      </select>
+
+      <label htmlFor="city">City:</label>
+      <select id="city">
+        <option value="select">Select City</option>
+        {cities.map(city => (
+          <option key={city.city_name} value={city.city_name}>{city.city_name}</option>
+        ))}
+      </select>
+    </div>
+  );
 };
 
-export default ImageUploader;
+export default YourComponent;

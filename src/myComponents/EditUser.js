@@ -17,6 +17,7 @@ export default function EditUser() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [dob, setDob] = useState('');
+    const [genders, setGenders] = useState(['male', 'female', 'other']);
     const [gender, setGender] = useState('');
     const [profile, setProfile] = useState('');
     const [preferredLanguage, setPreferredLanguage] = useState('');
@@ -203,6 +204,8 @@ export default function EditUser() {
 
     }, []);
 
+   
+
 
     return (
         <>
@@ -253,10 +256,11 @@ export default function EditUser() {
                         <div className="fiels">
                             <label htmlFor="gender" className="field-name">Gender</label>
                             <select name="gender" id="gender" value={gender} onChange={(e) => { setGender(e.target.value) }}>
-                                <option value="null">Please Select</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                                {genders.map((item, index) => (
+                                    gender === item ?
+                                        (<option key={index} value={item} selected>{item}</option>) :
+                                        (<option key={index} value={item} >{item}</option>)
+                                ))}
                             </select>
                             <div className="message"></div>
                         </div>
@@ -331,7 +335,7 @@ export default function EditUser() {
                     {/* <button className="add-component"> + Add another Mobile Number </button> */}
                     {/* <button className="add-component"> + Add another Address</button> */}
                     <br />
-                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Submit</button>
+                    <button type="submit" onClick={(e) => handleSubmit(e)} className="form-sub-btn">Update</button>
                 </form>
             </div>
         </>
